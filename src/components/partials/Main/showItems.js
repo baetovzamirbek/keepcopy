@@ -35,18 +35,10 @@ export default class ShowItems extends Component {
       bgColor: "#e2b9a1"
     })
   }
+
   render() {
     const { title, text, color } = this.props.data;
     const { handleRemove } = this.props;
-    const Card = () => (
-      <div className="popupColor">
-        <div className="color-white" onClick={this.whiteClick}></div>
-        <div className="color-red" onClick={this.redClick}></div>
-        <div className="color-yellow" onClick={this.yellowClick}></div>
-        <div className="color-green" onClick={this.greenClick}></div>
-        <div className="color-brown" onClick={this.brownClick}></div>
-      </div>
-    );
 
     return (
       <div className="col-sm-6 col-12 col-lg-4 col-xl-3 item-form">
@@ -57,15 +49,25 @@ export default class ShowItems extends Component {
             <Popup
               trigger={<ion-icon name="color-palette"></ion-icon>}
               position="top left"
-              on="hover"            >
-              <Card />
+              on="hover"
+            >
+              {close => (
+                <div className="popupColor" onCLick={close}>
+                  <div className="color-white" onClick={(event) => { this.whiteClick(); close(); }}></div>
+                  <div className="color-red" onClick={(event) => { this.redClick(); close(); }}></div>
+                  <div className="color-yellow" onClick={(event) => { this.yelloClick(); close(); }}></div>
+                  <div className="color-green" onClick={(event) => { this.greenClick(); close(); }}></div>
+                  <div className="color-brown" onClick={(event) => { this.brownClick(); close(); }}></div>
+                </div>
+              )}
+
             </Popup>
             <div className="removeIcon"><ion-icon name="trash" onClick={handleRemove}></ion-icon></div>
 
 
           </div>
         </div>
-      </div>
+      </div >
     )
   }
 }

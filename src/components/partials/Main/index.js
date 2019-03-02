@@ -53,6 +53,7 @@ export default class Main extends Component {
     this.setState({
       data: filteredItems
     })
+    alert("Note removed");
   };
 
 
