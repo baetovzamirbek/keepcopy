@@ -55,7 +55,7 @@ export default class ShowItems extends Component {
                 <div className="popupColor" onCLick={close}>
                   <div className="color-white" onClick={(event) => { this.whiteClick(); close(); }}></div>
                   <div className="color-red" onClick={(event) => { this.redClick(); close(); }}></div>
-                  <div className="color-yellow" onClick={(event) => { this.yelloClick(); close(); }}></div>
+                  <div className="color-yellow" onClick={(event) => { this.yellowClick(); close(); }}></div>
                   <div className="color-green" onClick={(event) => { this.greenClick(); close(); }}></div>
                   <div className="color-brown" onClick={(event) => { this.brownClick(); close(); }}></div>
                 </div>
