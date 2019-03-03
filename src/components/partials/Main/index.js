@@ -14,7 +14,8 @@ export default class Main extends Component {
     title: '',
     text: '',
     itemTitle: '',
-    itemText: ''
+    itemText: '',
+    takenoteShow: false
   };
   handleClose = () => {
     if (this.state.title !== '' && !this.state.text !== '') {
@@ -35,6 +36,7 @@ export default class Main extends Component {
         text: '',
       })
     }
+    this.setState({ takenoteShow: false })
   };
   handleTitle = (e) => {
     this.setState({
@@ -55,6 +57,10 @@ export default class Main extends Component {
     })
     alert("Note removed");
   };
+  takenoteClick = () => {
+    this.state.takenoteShow ? this.setState({ takenoteShow: false }) : this.setState({ takenoteShow: true });
+
+  }
 
 
   render() {
@@ -62,13 +68,21 @@ export default class Main extends Component {
     return (
       <main>
         <div className="container">
-          <div className="align-items-center row mx-auto shadow p-3 mb-3 bg-white">
-            <div className="d-flex align-items-center col">
-              <div className="take-note">
-                <div>Take a note...</div>
+          <div className="align-items-center row mx-auto shadow p-3 mb-3 bg-white takenoteRow">
+            <div className={this.state.takenoteShow ? 'take-noteHide' : 'take-note d-flex align-items-center col'}>
+              <div className={this.state.takenoteShow ? 'take-noteHide' : 'take-note'}>
+                <div onClick={this.takenoteClick}>Take a note...</div>
               </div>
             </div>
-            <div className="d-flex align-items-center justify-content-end col">
+            <TakeNote
+              handleClose={this.handleClose}
+              handleTitle={this.handleTitle}
+              handleText={this.handleText}
+              itemTitle={this.state.itemTitle}
+              itemText={this.state.itemText}
+              takenoteShow={this.state.takenoteShow}
+            />
+            <div className={this.state.takenoteShow ? 'take-noteHide' : 'd-flex align-items-center justify-content-end col'}>
               <div className="checkbox main-right-item">
                 <ion-icon name="checkbox-outline"></ion-icon>
               </div>
@@ -79,15 +93,6 @@ export default class Main extends Component {
                 <ion-icon name="image"></ion-icon>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <TakeNote
-              handleClose={this.handleClose}
-              handleTitle={this.handleTitle}
-              handleText={this.handleText}
-              itemTitle={this.state.itemTitle}
-              itemText={this.state.itemText}
-            />
           </div>
           <div className="row">
             {
