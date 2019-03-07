@@ -19,7 +19,7 @@ export default class ShowItems extends Component {
   }
   redClick = (e) => {
     this.setState({
-      bgColor: "C"
+      bgColor: "#ff897a"
     })
   }
   yellowClick = (e) => {
