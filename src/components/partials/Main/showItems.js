@@ -7,36 +7,11 @@ export default class ShowItems extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bgColor: "",
       clicked: false
     }
     this.handleClick = this.handleClick.bind(this);
   }
-  whiteClick = (e) => {
-    this.setState({
-      bgColor: "white"
-    })
-  }
-  redClick = (e) => {
-    this.setState({
-      bgColor: "#ff897a"
-    })
-  }
-  yellowClick = (e) => {
-    this.setState({
-      bgColor: "#fcff77"
-    })
-  }
-  greenClick = (e) => {
-    this.setState({
-      bgColor: "#bbf780"
-    })
-  }
-  brownClick = (e) => {
-    this.setState({
-      bgColor: "#e2b9a1"
-    })
-  }
+
 
   handleClick() {
     this.setState({
@@ -46,11 +21,11 @@ export default class ShowItems extends Component {
 
   render() {
     const { title, text, color } = this.props.data;
-    const { handleRemove, handleEdit } = this.props;
+    const { handleRemove, handleEdit, whiteClick, redClick, yellowClick, greenClick, brownClick, colorChange } = this.props;
 
     return (
       <div className="col-sm-6 col-12 col-lg-4 col-xl-3 item-form">
-        <div className="card" style={{ backgroundColor: this.state.bgColor === '' ? color : this.state.bgColor }}>
+        <div className="card" style={{ backgroundColor: colorChange === '' ? color : colorChange }}>
           <div className="group" onClick={handleEdit}>
             <span className="title">{title}</span>
             <span className="text">{text}</span>
@@ -63,11 +38,11 @@ export default class ShowItems extends Component {
             >
               {close => (
                 <div className="popupColor" onClick={close}>
-                  <div className="color-white" onClick={(event) => { this.whiteClick(); close(); }}></div>
-                  <div className="color-red" onClick={(event) => { this.redClick(); close(); }}></div>
-                  <div className="color-yellow" onClick={(event) => { this.yellowClick(); close(); }}></div>
-                  <div className="color-green" onClick={(event) => { this.greenClick(); close(); }}></div>
-                  <div className="color-brown" onClick={(event) => { this.brownClick(); close(); }}></div>
+                  <div className="color-white" onClick={(event) => { whiteClick(); close() }}></div>
+                  <div className="color-red" onClick={(event) => { redClick(); close() }}></div>
+                  <div className="color-yellow" onClick={(event) => { yellowClick(); close() }}></div>
+                  <div className="color-green" onClick={(event) => { greenClick(); close() }}></div>
+                  <div className="color-brown" onClick={(event) => { brownClick(); close() }}></div>
                 </div>
               )}
             </Popup>

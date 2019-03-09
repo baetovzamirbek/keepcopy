@@ -20,25 +20,37 @@ export default class Main extends Component {
     modal: false,
     titleTemp: '',
     textTemp: '',
-    idTemp: ''
+    idTemp: '',
+    color: '',
   };
   handleClose = () => {
-    if (this.state.title !== '' && !this.state.text !== '') {
+    if (this.state.title !== '' || this.state.text !== '') {
       const datacopy = [
         {
           id: this.state.data.length + 1,
           title: this.state.title,
-          text: this.state.text
+          text: this.state.text,
+          color: "#fff"
         }
       ];
-      const tempData = this.state.data.concat(datacopy);
-      this.setState({ data: tempData });
+      const tempData = datacopy.concat(this.state.data);
+      for (let i = 0; i < tempData.length; i++) {
+        const temp = tempData;
+        const movingItem = temp[i];
+        temp.splice(i, 1);
+        movingItem.id = i + 1;
+        temp.splice(i, 0, movingItem);
+        this.setState({ data: temp });
+      }
       this.setState({
         itemTitle: '',
         itemText: '',
         title: '',
         text: '',
-      })
+      });
+      console.log("add:");
+      console.log(this.state.data);
+
     }
     this.setState({ takenoteShow: false })
   };
@@ -58,12 +70,23 @@ export default class Main extends Component {
   };
   handleRemove = (id) => {
     const filteredItems = this.state.data.filter(item => item.id !== id);
-    this.setState({
-      data: filteredItems
-    })
-    alert("Note removed");
+    if (filteredItems.length !== 0) {
+      for (let i = 0; i < filteredItems.length; i++) {
+        const temp = filteredItems;
+        const movingItem = temp[i];
+        temp.splice(i, 1);
+        movingItem.id = i + 1;
+        temp.splice(i, 0, movingItem);
+        this.setState({ data: temp });
+      }
+    }
+    else { this.setState({ data: filteredItems }) }
+    console.log("remove:");
+    console.log(this.state.data);
   };
   handleEdit = (id) => {
+    console.log("id");
+    console.log(id);
     const filteredItems = this.state.data.filter(item => item.id === id);
     this.setState({
       modal: true,
@@ -83,7 +106,57 @@ export default class Main extends Component {
     movingItem.text = this.state.textTemp;
     temp.splice(this.state.idTemp - 1, 0, movingItem);
     this.setState({ data: temp, modal: false });
+    this.setState({
+      itemTitle: '',
+      itemText: '',
+      title: '',
+      text: '',
+      idTemp: ''
+    })
   }
+
+  whiteClick = (id) => {
+    const temp = this.state.data;
+    const movingItem = temp[id - 1];
+    temp.splice(id - 1, 1);
+    movingItem.color = "#ffffff";
+    temp.splice(id - 1, 0, movingItem);
+    this.setState({ data: temp });
+  }
+  redClick = (id) => {
+    const temp = this.state.data;
+    const movingItem = temp[id - 1];
+    temp.splice(id - 1, 1);
+    movingItem.color = "#ff897a";
+    temp.splice(id - 1, 0, movingItem);
+    this.setState({ data: temp });
+
+  }
+  yellowClick = (id) => {
+    const temp = this.state.data;
+    const movingItem = temp[id - 1];
+    temp.splice(id - 1, 1);
+    movingItem.color = "#fcff77";
+    temp.splice(id - 1, 0, movingItem);
+    this.setState({ data: temp });
+  }
+  greenClick = (id) => {
+    const temp = this.state.data;
+    const movingItem = temp[id - 1];
+    temp.splice(id - 1, 1);
+    movingItem.color = "#bbf780";
+    temp.splice(id - 1, 0, movingItem);
+    this.setState({ data: temp });
+  }
+  brownClick = (id) => {
+    const temp = this.state.data;
+    const movingItem = temp[id - 1];
+    temp.splice(id - 1, 1);
+    movingItem.color = "#e2b9a1";
+    temp.splice(id - 1, 0, movingItem);
+    this.setState({ data: temp });
+  }
+
 
 
   render() {
@@ -125,6 +198,12 @@ export default class Main extends Component {
                   data={data}
                   handleRemove={() => this.handleRemove(data.id)}
                   handleEdit={() => this.handleEdit(data.id)}
+                  whiteClick={() => this.whiteClick(data.id)}
+                  redClick={() => this.redClick(data.id)}
+                  yellowClick={() => this.yellowClick(data.id)}
+                  greenClick={() => this.greenClick(data.id)}
+                  brownClick={() => this.brownClick(data.id)}
+                  colorChange={this.state.color}
                 />
               ))}
           </div>
