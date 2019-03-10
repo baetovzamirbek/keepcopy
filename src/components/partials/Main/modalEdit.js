@@ -27,7 +27,7 @@ export default class ModalEdit extends Component {
                 />
                 <span style={{ marginLeft: 8 }}>Label Text</span>
               </label>
-              <span><textarea cols="50" placeholder="Take a note" value={textTemp} onChange={handleText} spellCheck="false"></textarea></span>
+              <span><textarea placeholder="Take a note" value={textTemp} onChange={handleText} spellCheck="false"></textarea></span>
               <button onClick={modalClose} >close</button>
             </div>
           </div>
@@ -49,28 +49,31 @@ const ModalContainer = styled.div`
       display: flex;
       align-items: center;
       justify-content:center;
-#modal {
-            background: #fff;
+
+      #modal {
+        background: #fff;
         border-radius: 10px;
+        padding: 15px;
       }
-input, textarea {
-            border - width: 0px;
+      input, textarea {
+        border - width: 0px;
         border: none;
         box-shadow: none;
         overflow: hidden;
         resize: none;
-      }
-textarea {
-            height: 25vw;
         width: 100%;
       }
-input {
-            font - weight: 600
+      textarea {
+        height: 25vw;
+        width: 100%;
       }
-input:focus, textarea:focus {
-            outline: none
+      input {
+        font - weight: 600
       }
-button {
-            margin - bottom: 2em;
+      input:focus, textarea:focus {
+        outline: none
+      }
+      button {
+        margin - bottom: 2em;
       }
       `

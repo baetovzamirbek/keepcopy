@@ -7,8 +7,12 @@ export default class TakeNote extends Component {
     return (
       <div className={takenoteShow ? 'col takeNoteForm' : 'takeNoteHide'}>
         <div className="card">
-          <span className="title"><input type="text" placeholder="Title" value={itemTitle} onChange={handleTitle} /></span>
-          <span className="takeNote"><textarea cols="50" placeholder="Take a note" value={itemText} onChange={handleText}></textarea></span>
+          <span className="title">
+            <input type="text" placeholder="Title" value={itemTitle} onChange={handleTitle} />
+          </span>
+          <span className="takeNote">
+            <textarea placeholder="Take a note" value={itemText} onChange={handleText}></textarea>
+          </span>
           <span className="close unselectable" onClick={handleClose}>Close</span>
         </div>
       </div>
