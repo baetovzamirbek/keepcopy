@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import ShowItems from "./showItems"
 import TakeNote from "./takeNote"
 import ModalEdit from './modalEdit'
@@ -14,23 +14,35 @@ export default class Main extends Component {
     data: keepData,
     title: '',
     text: '',
-    itemTitle: '',
-    itemText: '',
     takenoteShow: false,
+    takelistShow: false,
     modal: false,
-    titleTemp: '',
-    textTemp: '',
-    idTemp: '',
+    id: '',
     color: '',
+    checked: [],
+    checkbox: [],
+    checkboxtext: '',
+    checkedCheck: []
   };
+  contentEditable = React.createRef();
+
+  /* ----------takeNote.js ------------------- */
   handleClose = () => {
-    if (this.state.title !== '' || this.state.text !== '') {
+    if (this.state.title !== '' || this.state.text !== '' || this.state.checkboxtext !== '') {
+      if (this.state.takelistShow) {
+        this.setState({
+          checkbox: this.state.checkbox.push(this.state.checkboxtext),
+          checkedCheck: this.state.checkedCheck.push('true')
+        })
+      }
       const datacopy = [
         {
           id: this.state.data.length + 1,
           title: this.state.title,
           text: this.state.text,
-          color: "#fff"
+          color: "#fff",
+          checked: this.state.checkedCheck,
+          checkbox: this.state.checkbox
         }
       ];
       const tempData = datacopy.concat(this.state.data);
@@ -43,31 +55,39 @@ export default class Main extends Component {
         this.setState({ data: temp });
       }
       this.setState({
-        itemTitle: '',
-        itemText: '',
         title: '',
         text: '',
+        checkbox: [],
+        checkboxtext: '',
+        checkedCheck: []
       });
-      console.log("add:");
-      console.log(this.state.data);
-
     }
-    this.setState({ takenoteShow: false })
+    this.setState({
+      takenoteShow: false,
+      takelistShow: false,
+    })
   };
+
   handleTitle = (e) => {
     this.setState({
-      title: e.target.value,
-      itemTitle: e.target.value,
-      titleTemp: e.target.value,
+      title: e.target.value
     });
   };
+
   handleText = (e) => {
-    this.setState({
-      text: e.target.value,
-      itemText: e.target.value,
-      textTemp: e.target.value
-    });
+    if (this.state.takelistShow) {
+      this.setState({
+        checkboxtext: e.target.value
+      });
+    }
+    else {
+      this.setState({
+        text: e.target.value,
+      });
+    }
+
   };
+
   handleRemove = (id) => {
     const filteredItems = this.state.data.filter(item => item.id !== id);
     if (filteredItems.length !== 0) {
@@ -80,83 +100,81 @@ export default class Main extends Component {
         this.setState({ data: temp });
       }
     }
-    else { this.setState({ data: filteredItems }) }
-    console.log("remove:");
-    console.log(this.state.data);
+    else {
+      this.setState({ data: filteredItems })
+    }
   };
+
   handleEdit = (id) => {
-    console.log("id");
-    console.log(id);
     const filteredItems = this.state.data.filter(item => item.id === id);
     this.setState({
       modal: true,
-      titleTemp: filteredItems[0].title,
-      textTemp: filteredItems[0].text,
-      idTemp: id
+      title: filteredItems[0].title,
+      text: filteredItems[0].text,
+      checkbox: filteredItems[0].checkbox,
+      checked: filteredItems[0].checked,
+      id: id
+    })
+  };
+
+  takenoteClick = () => {
+    this.setState({
+      takenoteShow: !this.state.takenoteShow
+    })
+  };
+
+  takelistClick = () => {
+    this.setState({
+      takelistShow: !this.state.takelistShow
     })
   }
-  takenoteClick = () => {
-    this.state.takenoteShow ? this.setState({ takenoteShow: false }) : this.setState({ takenoteShow: true });
-  }
-  modalClose = () => {
+
+  selectColor = (id, colorCode) => {
     const temp = this.state.data;
-    const movingItem = temp[this.state.idTemp - 1];
-    temp.splice(this.state.idTemp - 1, 1);
-    movingItem.title = this.state.titleTemp;
-    movingItem.text = this.state.textTemp;
-    temp.splice(this.state.idTemp - 1, 0, movingItem);
-    this.setState({ data: temp, modal: false });
+    const movingItem = temp[id - 1];
+    temp.splice(id - 1, 1);
+    movingItem.color = colorCode === ('white' && '#ffffff') || (colorCode === 'red' && '#ff897a') || (colorCode === 'yellow' && '#fcff77') || (colorCode === 'green' && '#bbf780') || (colorCode === 'brown' && '#e2b9a1');
+    temp.splice(id - 1, 0, movingItem);
+    this.setState({ data: temp });
+  }
+
+
+  /*   -----Modal Window component's functions---- */
+  click = (key) => {
+    const temp = this.state.checked;
+    const movingItem = temp[key];
+    temp.splice(key, 1);
+    temp.splice(key, 0, !movingItem);
     this.setState({
-      itemTitle: '',
-      itemText: '',
+      checked: temp
+    })
+  }
+
+  modalClose = (content) => {
+
+    const temp = this.state.data;
+    const movingItem = temp[this.state.id - 1];
+    console.log(movingItem)
+    temp.splice(this.state.id - 1, 1);
+    movingItem.title = this.state.title;
+    if (content !== null) {
+      movingItem.checkbox = this.state.checkbox;
+      movingItem.checked = this.state.checked;
+    }
+    else {
+      movingItem.text = this.state.text;
+    }
+    temp.splice(this.state.id - 1, 0, movingItem);
+    this.setState({
+      data: temp,
+      modal: false,
       title: '',
       text: '',
-      idTemp: ''
-    })
-  }
-
-  whiteClick = (id) => {
-    const temp = this.state.data;
-    const movingItem = temp[id - 1];
-    temp.splice(id - 1, 1);
-    movingItem.color = "#ffffff";
-    temp.splice(id - 1, 0, movingItem);
-    this.setState({ data: temp });
-  }
-  redClick = (id) => {
-    const temp = this.state.data;
-    const movingItem = temp[id - 1];
-    temp.splice(id - 1, 1);
-    movingItem.color = "#ff897a";
-    temp.splice(id - 1, 0, movingItem);
-    this.setState({ data: temp });
-
-  }
-  yellowClick = (id) => {
-    const temp = this.state.data;
-    const movingItem = temp[id - 1];
-    temp.splice(id - 1, 1);
-    movingItem.color = "#fcff77";
-    temp.splice(id - 1, 0, movingItem);
-    this.setState({ data: temp });
-  }
-  greenClick = (id) => {
-    const temp = this.state.data;
-    const movingItem = temp[id - 1];
-    temp.splice(id - 1, 1);
-    movingItem.color = "#bbf780";
-    temp.splice(id - 1, 0, movingItem);
-    this.setState({ data: temp });
-  }
-  brownClick = (id) => {
-    const temp = this.state.data;
-    const movingItem = temp[id - 1];
-    temp.splice(id - 1, 1);
-    movingItem.color = "#e2b9a1";
-    temp.splice(id - 1, 0, movingItem);
-    this.setState({ data: temp });
-  }
-
+      id: '',
+      checkbox: '',
+      checked: '',
+    });
+  };
 
 
   render() {
@@ -165,22 +183,23 @@ export default class Main extends Component {
       <main>
         <div className="container">
           <div className="align-items-center row mx-auto shadow p-3 mb-3 bg-white takenoteRow">
-            <div className={this.state.takenoteShow ? 'take-noteHide' : 'take-note d-flex align-items-center col'}>
-              <div className={this.state.takenoteShow ? 'take-noteHide' : 'take-note'}>
-                <div onClick={this.takenoteClick} className="unselectable">Take a note...</div>
-              </div>
+            <div className={this.state.takenoteShow || this.state.takelistShow ? 'take-noteHide' : 'take-note'}>
+              <div onClick={this.takenoteClick} className="unselectable">Take a note...</div>
             </div>
             <TakeNote
               handleClose={this.handleClose}
               handleTitle={this.handleTitle}
               handleText={this.handleText}
-              itemTitle={this.state.itemTitle}
-              itemText={this.state.itemText}
+              contentEditable={this.contentEditable}
+              title={this.state.title}
+              text={this.state.text}
+              checkboxtext={this.state.checkboxtext}
               takenoteShow={this.state.takenoteShow}
+              takelistShow={this.state.takelistShow}
             />
-            <div className={this.state.takenoteShow ? 'take-noteHide' : 'd-flex align-items-center justify-content-end col'}>
+            <div className={this.state.takenoteShow || this.state.takelistShow ? 'take-noteHide' : 'd-flex align-items-center justify-content-end col'}>
               <div className="checkbox main-right-item">
-                <ion-icon name="checkbox-outline"></ion-icon>
+                <ion-icon name="checkbox-outline" onClick={this.takelistClick}></ion-icon>
               </div>
               <div className="brush main-right-item">
                 <ion-icon name="brush"></ion-icon>
@@ -190,31 +209,35 @@ export default class Main extends Component {
               </div>
             </div>
           </div>
+
+          {/* ShowItems */}
           <div className="row">
             {
               data.map(data => (
                 <ShowItems
-                  key={data.id}
                   data={data}
+                  color={this.state.color === '' ? data.color : this.state.color}
                   handleRemove={() => this.handleRemove(data.id)}
                   handleEdit={() => this.handleEdit(data.id)}
-                  whiteClick={() => this.whiteClick(data.id)}
-                  redClick={() => this.redClick(data.id)}
-                  yellowClick={() => this.yellowClick(data.id)}
-                  greenClick={() => this.greenClick(data.id)}
-                  brownClick={() => this.brownClick(data.id)}
-                  colorChange={this.state.color}
+                  selectColor={this.selectColor}
+                  click={this.click}
                 />
               ))}
           </div>
         </div>
+
+        {/* Modal Window */}
         {this.state.modal &&
           <ModalEdit
-            modalClose={this.modalClose}
-            titleTemp={this.state.titleTemp}
-            textTemp={this.state.textTemp}
+            title={this.state.title}
+            text={this.state.text}
+            checkbox={this.state.checkbox}
+            checked={this.state.checked}
             handleTitle={this.handleTitle}
             handleText={this.handleText}
+            modalClose={this.modalClose}
+            handleCheckbox={this.handleCheckbox}
+            click={this.click}
           />}
       </main>
     )

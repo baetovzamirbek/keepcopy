@@ -1,3 +1,4 @@
+/*
 import React from 'react'
 import styled from 'styled-components'
 
@@ -54,4 +55,31 @@ const Checkbox = ({ className, checked, ...props }) => (
   </CheckboxContainer>
 )
 
-export default Checkbox
+export default Checkbox 
+import React, { Component } from 'react'
+import './checkbox.sass'
+
+export default class checkbox extends Component {
+  render() {
+    return (
+      <div><input type="checkbox" Checked="true" /><span>Make my profile visible</span></div>
+    )
+  }
+}
+*/
+
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const Checkbox = ({ type = 'checkbox', name, checked = false, onChange }) => (
+  <input type={type} name={name} checked={checked} onChange={onChange} />
+);
+
+Checkbox.propTypes = {
+  type: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  checked: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+}
+
+export default Checkbox;
