@@ -22,6 +22,7 @@ export default class TakeNote extends Component {
               disabled={false}       // use true to disable editing
               onChange={handleText} // handle innerHTML change
               tagName='span' // Use a custom HTML tag (uses a div by default)
+              className='contentEdit'
             />
           </span>
           <span className="close unselectable" onClick={handleClose}>Close</span>

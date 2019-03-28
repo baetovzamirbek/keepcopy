@@ -10,7 +10,6 @@ export default class ShowItems extends Component {
       clicked: false
     }
   }
-
   render() {
     const { id, title, text, checkbox, checked } = this.props.data;
     const { color, handleRemove, handleEdit, selectColor } = this.props;

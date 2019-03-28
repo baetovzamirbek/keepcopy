@@ -120,6 +120,7 @@ const ModalContainer = styled.div`
         display: none
       }
       .checkBoxChange{
-        display: inline-block
+        width: 90%;
+        float: right;
       }
       `

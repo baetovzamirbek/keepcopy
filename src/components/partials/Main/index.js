@@ -151,10 +151,8 @@ export default class Main extends Component {
   }
 
   modalClose = (content) => {
-
     const temp = this.state.data;
     const movingItem = temp[this.state.id - 1];
-    console.log(movingItem)
     temp.splice(this.state.id - 1, 1);
     movingItem.title = this.state.title;
     if (content !== null) {
@@ -171,8 +169,8 @@ export default class Main extends Component {
       title: '',
       text: '',
       id: '',
-      checkbox: '',
-      checked: '',
+      checkbox: [],
+      checked: []
     });
   };
 
